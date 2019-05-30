@@ -1,3 +1,30 @@
+%% Project Spatial Interpolation
+clc; clear all; close all
+%% Plot Graph
+Input = importdata('Snotel_42017.xlsx');%Excel Sheet Snotel_42017
+Input = Input.data; % data of the structure
+Latitude = Input(:,1);%A1 Column Latitude
+Longitude = Input(:,2);%B1 Column Longitude
+SWE = Input(:,3); %C1 Column SWE [in]
+Elevation = Input(:,4);%D1 Column Elevation [ft]
+plot(SWE,Elevation, 'ok','markerfacecolor','r');hold all;
+xlabel('SWE [in]','fontsize',16);% x-label SWE
+ylabel('Elevation [ft]','fontsize',16);%y-label Elevation
+title('SWE and Elevation','fontsize',16);%Title of graph
+grid on %Produces Squares
+%% Best Fit Line
+p = polyfit(SWE,Elevation,1);%Finds the coefficients of a polynomial P(x) of degree N
+f = polyval(p,SWE);%Returns value of a polynomial P evaluated at X
+hold on;
+plot(SWE,f,'--k');
+lgd=legend ('Elevation and SWE','Best-Fit Line','Location','Best','Orientation','horizontal');%Legend for graph
+title(lgd,'Legend');
+%% Calculate R^2
+R=corrcoef(SWE,Elevation);% coefficient for
+R2=R(2,1)^2;%
+% [SWE1,Elevation1] = ginput(5);%Five points on the graph
+% T=table(SWE1,Elevation1)%Table for points
+%% Randomly Selected Values
 Observed=[16,98,96,49,81];%Randomly Selected Values
 True=SWE(Observed);
 b = 1;% position counter
@@ -18,7 +45,7 @@ obs_elev(k) = Elevation(a);
 k = k+1;
 end
 end
-%% Determine Min and Max for Latitude and Longitude
+%% Determine   Min and Max for Latitude and Longitude
 MinLatitude= min(Latitude);%min latitude
 MaxLatitude= max(Latitude);%max latitude
 MinLongitude= min(Longitude);%min longitude
